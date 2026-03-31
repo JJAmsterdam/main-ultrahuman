@@ -6,6 +6,8 @@
   <title>UltraHuman Main</title>
   <meta name="description" content="Alle belangrijke links van UltraHuman op een plek." />
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+
     :root {
       --bg: #f8f5ef;
       --card: #ffffff;
@@ -22,7 +24,7 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      font-family: "Montserrat", "Segoe UI", sans-serif;
       color: var(--text);
       background:
         radial-gradient(circle at 10% 10%, #ffe8d5 0%, transparent 35%),
@@ -61,6 +63,7 @@
 
     h1 {
       margin: 0;
+      font-family: "Dosis", "Montserrat", sans-serif;
       font-size: clamp(1.4rem, 2.2vw, 1.9rem);
       line-height: 1.2;
     }
@@ -112,9 +115,213 @@
       font-size: 0.9rem;
       text-align: center;
     }
+
+    .lock {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(248, 245, 239, 0.96);
+      z-index: 50;
+      padding: 16px;
+    }
+
+    .lock.hidden {
+      display: none;
+    }
+
+    .lock-card {
+      width: min(420px, 100%);
+      background: var(--card);
+      border: 1px solid #efe7dc;
+      border-radius: var(--radius);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .lock-title {
+      margin: 0;
+      font-family: "Dosis", "Montserrat", sans-serif;
+      font-size: 1.2rem;
+    }
+
+    .lock-sub {
+      margin: 8px 0 14px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 8px 0 14px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      border: 1px solid #d8cebf;
+      background: #fff;
+    }
+
+    .dot.filled {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .pad {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .key {
+      min-height: 48px;
+      border: 1px solid #e8ded1;
+      border-radius: 10px;
+      background: #fff;
+      font: inherit;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .key:active {
+      transform: scale(0.98);
+    }
+
+    .lock-msg {
+      margin-top: 10px;
+      min-height: 1.1em;
+      font-size: 0.88rem;
+      color: #9d3c2f;
+      font-weight: 600;
+    }
+
+    .manage-pin {
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .mini-btn {
+      border: 1px solid #e8ded1;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      min-height: 40px;
+      padding: 8px 12px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .pin-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .pin-modal.hidden {
+      display: none;
+    }
+
+    .pin-modal-card {
+      width: min(420px, 100%);
+      background: #fff;
+      border-radius: 14px;
+      border: 1px solid #efe7dc;
+      padding: 16px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .pin-modal h3 {
+      margin: 0 0 10px;
+      font-family: "Dosis", "Montserrat", sans-serif;
+      font-size: 1.2rem;
+    }
+
+    .pin-form {
+      display: grid;
+      gap: 9px;
+    }
+
+    .pin-form label {
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .pin-form input {
+      width: 100%;
+      min-height: 44px;
+      border-radius: 10px;
+      border: 1px solid #e8ded1;
+      padding: 10px 11px;
+      font: inherit;
+      outline: none;
+    }
+
+    .pin-form input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--ring);
+    }
+
+    .pin-row {
+      margin-top: 6px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pin-row .mini-btn {
+      flex: 1;
+    }
+
+    .pin-note {
+      margin-top: 8px;
+      min-height: 1.1em;
+      color: #9d3c2f;
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .pin-note.ok {
+      color: #247f4d;
+    }
   </style>
 </head>
 <body>
+  <div id="pinLock" class="lock">
+    <section class="lock-card" aria-label="Toegang met pincode">
+      <h2 class="lock-title">Toegangscode</h2>
+      <p class="lock-sub">Voer je cijfercode in om de pagina te openen.</p>
+      <div id="pinDots" class="dots" aria-hidden="true"></div>
+      <div class="pad" id="pinPad">
+        <button class="key" data-key="1" type="button">1</button>
+        <button class="key" data-key="2" type="button">2</button>
+        <button class="key" data-key="3" type="button">3</button>
+        <button class="key" data-key="4" type="button">4</button>
+        <button class="key" data-key="5" type="button">5</button>
+        <button class="key" data-key="6" type="button">6</button>
+        <button class="key" data-key="7" type="button">7</button>
+        <button class="key" data-key="8" type="button">8</button>
+        <button class="key" data-key="9" type="button">9</button>
+        <button class="key" data-key="clear" type="button">Wis</button>
+        <button class="key" data-key="0" type="button">0</button>
+        <button class="key" data-key="del" type="button">⌫</button>
+      </div>
+      <div id="pinMessage" class="lock-msg"></div>
+    </section>
+  </div>
+
   <main class="card">
     <section class="top">
       <div class="avatar" aria-hidden="true">UH</div>
@@ -125,11 +332,185 @@
     </section>
 
     <section class="links" aria-label="Belangrijke links">
-      <a class="link primary" href="https://social.ultrahuman.nl">Strength</a>
-      <a class="link primary" href="https://running.ultrahuman.nl">Running</a>
+      <a id="strengthLink" class="link primary" href="https://social.ultrahuman.nl">Strength</a>
+      <a id="runningLink" class="link primary" href="https://running.ultrahuman.nl">Running</a>
     </section>
+
+    <div class="manage-pin">
+      <button id="openPinModalBtn" class="mini-btn" type="button">PIN wijzigen</button>
+    </div>
 
     <p class="foot">Kies je route: Strength of Running.</p>
   </main>
+
+  <div id="pinModal" class="pin-modal hidden">
+    <section class="pin-modal-card" aria-label="Pincode wijzigen">
+      <h3>Pincode wijzigen</h3>
+      <div class="pin-form">
+        <div>
+          <label for="oldPin">Huidige pincode</label>
+          <input id="oldPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" />
+        </div>
+        <div>
+          <label for="newPin">Nieuwe pincode (4-6 cijfers)</label>
+          <input id="newPin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" />
+        </div>
+        <div>
+          <label for="newPinRepeat">Herhaal nieuwe pincode</label>
+          <input id="newPinRepeat" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" />
+        </div>
+      </div>
+      <div class="pin-row">
+        <button id="savePinBtn" class="mini-btn" type="button">Opslaan</button>
+        <button id="closePinModalBtn" class="mini-btn" type="button">Sluiten</button>
+      </div>
+      <div id="pinModalNote" class="pin-note"></div>
+    </section>
+  </div>
+
+  <script>
+    const DEFAULT_ACCESS_PIN = '1234';
+    const SESSION_UNLOCK_KEY = 'ultrahuman_main_pin_unlocked';
+    const PIN_STORAGE_KEY = 'ultrahuman_main_pin_code_v1';
+
+    let ACCESS_PIN = localStorage.getItem(PIN_STORAGE_KEY) || DEFAULT_ACCESS_PIN;
+
+    const pinLock = document.getElementById('pinLock');
+    const pinPad = document.getElementById('pinPad');
+    const pinDots = document.getElementById('pinDots');
+    const pinMessage = document.getElementById('pinMessage');
+    let entered = '';
+    const openPinModalBtn = document.getElementById('openPinModalBtn');
+    const pinModal = document.getElementById('pinModal');
+    const closePinModalBtn = document.getElementById('closePinModalBtn');
+    const savePinBtn = document.getElementById('savePinBtn');
+    const oldPinInput = document.getElementById('oldPin');
+    const newPinInput = document.getElementById('newPin');
+    const newPinRepeatInput = document.getElementById('newPinRepeat');
+    const pinModalNote = document.getElementById('pinModalNote');
+
+    function renderDots() {
+      pinDots.innerHTML = '';
+      for (let i = 0; i < ACCESS_PIN.length; i += 1) {
+        const dot = document.createElement('span');
+        dot.className = `dot${i < entered.length ? ' filled' : ''}`;
+        pinDots.appendChild(dot);
+      }
+    }
+
+    function unlock() {
+      pinLock.classList.add('hidden');
+      sessionStorage.setItem(SESSION_UNLOCK_KEY, '1');
+    }
+
+    function checkPin() {
+      if (entered.length < ACCESS_PIN.length) return;
+      if (entered === ACCESS_PIN) {
+        pinMessage.textContent = '';
+        unlock();
+        return;
+      }
+      pinMessage.textContent = 'Onjuiste code.';
+      entered = '';
+      renderDots();
+    }
+
+    function initPin() {
+      if (sessionStorage.getItem(SESSION_UNLOCK_KEY) === '1') {
+        unlock();
+        return;
+      }
+
+      renderDots();
+      pinPad.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+        const key = target.getAttribute('data-key');
+        if (!key) return;
+
+        pinMessage.textContent = '';
+
+        if (key === 'clear') {
+          entered = '';
+          renderDots();
+          return;
+        }
+        if (key === 'del') {
+          entered = entered.slice(0, -1);
+          renderDots();
+          return;
+        }
+        if (!/^[0-9]$/.test(key)) return;
+        if (entered.length >= ACCESS_PIN.length) return;
+
+        entered += key;
+        renderDots();
+        checkPin();
+      });
+    }
+
+    function clearPinModal() {
+      oldPinInput.value = '';
+      newPinInput.value = '';
+      newPinRepeatInput.value = '';
+      pinModalNote.className = 'pin-note';
+      pinModalNote.textContent = '';
+    }
+
+    openPinModalBtn.addEventListener('click', () => {
+      clearPinModal();
+      pinModal.classList.remove('hidden');
+    });
+
+    closePinModalBtn.addEventListener('click', () => {
+      pinModal.classList.add('hidden');
+    });
+
+    savePinBtn.addEventListener('click', () => {
+      const oldPin = oldPinInput.value.trim();
+      const newPin = newPinInput.value.trim();
+      const repeatPin = newPinRepeatInput.value.trim();
+
+      pinModalNote.className = 'pin-note';
+
+      if (oldPin !== ACCESS_PIN) {
+        pinModalNote.textContent = 'Huidige pincode klopt niet.';
+        return;
+      }
+      if (!/^[0-9]{4,6}$/.test(newPin)) {
+        pinModalNote.textContent = 'Nieuwe pincode moet 4 t/m 6 cijfers zijn.';
+        return;
+      }
+      if (newPin !== repeatPin) {
+        pinModalNote.textContent = 'Nieuwe pincode en herhaling komen niet overeen.';
+        return;
+      }
+
+      ACCESS_PIN = newPin;
+      localStorage.setItem(PIN_STORAGE_KEY, ACCESS_PIN);
+      entered = '';
+      renderDots();
+
+      pinModalNote.className = 'pin-note ok';
+      pinModalNote.textContent = 'Pincode opgeslagen.';
+      setTimeout(() => {
+        pinModal.classList.add('hidden');
+      }, 700);
+    });
+
+    // Robuuste navigatie voor alle browsers/webviews.
+    const strengthLink = document.getElementById('strengthLink');
+    const runningLink = document.getElementById('runningLink');
+    strengthLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.assign('https://social.ultrahuman.nl');
+    });
+    runningLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.assign('https://running.ultrahuman.nl');
+    });
+
+    initPin();
+  </script>
 </body>
 </html>
