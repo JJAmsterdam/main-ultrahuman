@@ -118,11 +118,21 @@
     </section>
 
     <section class="links" aria-label="Belangrijke links">
-      <a class="link" href="https://strength.ultrahuman.nl/social-trainingen.html">Strength</a>
-      <a class="link" href="https://running.ultrahuman.nl/">Running</a>
+      <a class="link js-nav" href="https://social.ultrahuman.nl/social-trainingen.html" data-target="https://social.ultrahuman.nl/social-trainingen.html">Strength</a>
+      <a class="link js-nav" href="https://train.ultrahuman.nl/" data-target="https://train.ultrahuman.nl/">Running</a>
     </section>
 
-    <p class="foot">Main hub voor Social en Running.</p>
+    <p class="foot">Main hub voor Strenght & Running.</p>
   </main>
+  <script>
+    document.querySelectorAll('.js-nav').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const target = link.getAttribute('data-target');
+        if (!target) return;
+        event.preventDefault();
+        window.location.replace(target);
+      });
+    });
+  </script>
 </body>
 </html>
